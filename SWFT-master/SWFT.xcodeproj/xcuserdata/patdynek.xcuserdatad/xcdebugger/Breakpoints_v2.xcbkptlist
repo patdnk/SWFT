@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SWFT/BluetoothManager/BluetoothManager.swift"
+            timestampString = "520957726.190502"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "centralManager(central:didDiscoverPeripheral:advertisementData:RSSI:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SWFT.BluetoothManager.(centralManager in _613ED2822440E98E0F2C150673F28405) (central : __ObjC.CBCentralManager, didDiscoverPeripheral : __ObjC.CBPeripheral, advertisementData : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, RSSI : __ObjC.NSNumber) -&gt; ()"
+                  moduleName = "SWFT"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/patdynek/Downloads/SWFT/SWFT/BluetoothManager/BluetoothManager.swift"
+                  timestampString = "520957727.272466"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SWFT.BluetoothManager.((centralManager in _613ED2822440E98E0F2C150673F28405) (central : __ObjC.CBCentralManager, didDiscoverPeripheral : __ObjC.CBPeripheral, advertisementData : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, RSSI : __ObjC.NSNumber) -&gt; ()).(closure #1)"
+                  moduleName = "SWFT"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/patdynek/Downloads/SWFT/SWFT/BluetoothManager/BluetoothManager.swift"
+                  timestampString = "520957727.274942"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
