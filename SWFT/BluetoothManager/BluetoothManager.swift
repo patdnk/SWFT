@@ -11,60 +11,32 @@ import CoreBluetooth
 
 class BluetoothManagerDelegateMulticast <T> {
     
-    private var delegates = [WeakWrapper]()
+    private let delegates: NSHashTable<AnyObject>
+    
+    init(strongReferences: Bool = false) {
+        delegates = strongReferences ? NSHashTable<AnyObject>(): NSHashTable<AnyObject>.weakObjects()
+    }
     
     func addDelegate(_ delegate: T) {
-        if Mirror(reflecting: delegate).subjectType is AnyClass {
-            delegates.append(WeakWrapper(value: delegate as AnyObject))
-        } else {
-            fatalError("MulticastDelegate does not support value types")
-        }
+        delegates.add(delegate as AnyObject)
     }
     
     func removeDelegate(_ delegate: T) {
-        if type(of: delegate).self is AnyClass {
-            delegates.remove(WeakWrapper(value: delegate as AnyObject))
-        }
+        delegates.remove(delegate as AnyObject)
     }
 
     
-    func invokeDelegate(_ invocation: (T) -> ()) {
-        for (index, delegate) in delegates.enumerated() {
-            if let delegate = delegate.value {
-                invocation(delegate as! T)
-            } else {
-                delegates.remove(at: index)
-            }
+    func invokeDelegates(_ invocation: (T) -> ()) {
+        for delegate in delegates.allObjects {
+            invocation(delegate as! T)
         }
     }
     
-}
-
-private class WeakWrapper: Equatable {
-    weak var value: AnyObject?
-    
-    init(value: AnyObject) {
-        self.value = value
-    }
-}
-
-private func ==(lhs: WeakWrapper, rhs: WeakWrapper) -> Bool {
-    return lhs.value === rhs.value
-}
-
-extension RangeReplaceableCollection where Iterator.Element : Equatable {
-    @discardableResult
-    mutating func remove(_ element : Iterator.Element) -> Iterator.Element? {
-        if let index = self.index(of: element) {
-            return self.remove(at: index)
-        }
-        return nil
-    }
 }
 
 protocol BluetoothManagerDelegate: class {
     
-    func didDiscoverPeripherals(peripheral:CBPeripheral, advertisementData:[String : AnyObject], RSSI:NSNumber)
+    func didDiscoverPeripherals(peripheral:CBPeripheral, advertisementData:[String : Any], RSSI:NSNumber)
     func didConnectPeripheral(peripheral:CBPeripheral)
     func didDiconnectPeripheral(peripheral:CBPeripheral)
     func didDiscoverServices(peripheral:CBPeripheral, services:[CBService])
@@ -125,25 +97,33 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     // MARK: - CoreBluetooth methods
     
-    private func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
-        delegates.invokeDelegate {
+        delegates.invokeDelegates {
             $0.didDiscoverPeripherals(peripheral: peripheral, advertisementData: advertisementData, RSSI: RSSI)
         }
         
     }
     
-    internal func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+//    private func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
+//        
+//        delegates.invokeDelegate {
+//            $0.didDiscoverPeripherals(peripheral: peripheral, advertisementData: advertisementData, RSSI: RSSI)
+//        }
+//        
+//    }
+    
+    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
         
-        delegates.invokeDelegate {
+        delegates.invokeDelegates {
             $0.didConnectPeripheral(peripheral: peripheral)
         }
         
     }
     
-    internal func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         
-        delegates.invokeDelegate {
+        delegates.invokeDelegates {
             $0.didDiconnectPeripheral(peripheral: peripheral)
         }
         
@@ -151,27 +131,27 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     // MARK: - CBPeripheral delegate methods
     
-    internal func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         
     }
     
-    internal func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         
     }
     
-    internal func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
     }
     
-    internal func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         
     }
     
-    internal func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         
     }
     
-    internal func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
         
     }
     
@@ -180,7 +160,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     //    func connectPeripheral(peripheral:CBPeripheral)
     //    func diconnectPeripheral(peripheral:CBPeripheral)
     
-    internal func centralManagerDidUpdateState(_ central: CBCentralManager) {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
         
         switch centralManager.state {
             

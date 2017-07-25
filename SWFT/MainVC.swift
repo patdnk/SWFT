@@ -76,7 +76,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
     
     // MARK: - BluetoothManagerDelegate methods
     
-    func didDiscoverPeripherals(peripheral:CBPeripheral, advertisementData:[String : AnyObject], RSSI:NSNumber) {
+    func didDiscoverPeripherals(peripheral:CBPeripheral, advertisementData:[String : Any], RSSI:NSNumber) {
         
         self.peripherals.append(peripheral)
         
