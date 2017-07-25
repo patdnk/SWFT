@@ -17,7 +17,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
     
     let databaseManager = DatabaseManager.sharedInstance
     let bluetoothManager = BluetoothManager.sharedInstance
-    let bluetoothManagerMulticast = BluetoothManagerDelegateMulticast<BluetoothManagerDelegate>()
+//    let bluetoothManagerMulticast = BluetoothManagerDelegateMulticast<BluetoothManagerDelegate>()
     var peripherals = [CBPeripheral]()
 
     override func viewDidLoad() {
@@ -25,13 +25,15 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.bluetoothManagerMulticast.addDelegate(self)
+        BluetoothManager.sharedInstance.powerOnCentralManager()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
         self.title = "BLE devices"
+        
+        self.bluetoothManager.addDelegate(self)
         
 //        let deadline = DispatchTime.now() + 1
 //        
@@ -80,6 +82,8 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         
         self.peripherals.append(peripheral)
         
+        print("peripheral: \(peripheral) advertisement: \(advertisementData)")
+        
     }
     
     func didConnectPeripheral(peripheral: CBPeripheral) {
@@ -116,7 +120,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
     }
     
     // MARK: - Scan for peripherals
-    
+/*
     func scanForPeripherals() -> Bool {
         
         
@@ -133,7 +137,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         return true
         
     }
-    
+*/    
     // MARK: - CoreData testing methods
     
     
@@ -144,7 +148,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         var mainEntity:SWFTConfig?
         
         do {
-            let fetchedConfigs = try DatabaseManager.sharedInstance.persistentContainer.viewContext.fetch(configFetch) as! [SWFTConfig]
+            let fetchedConfigs = try self.databaseManager.persistentContainer.viewContext.fetch(configFetch) as! [SWFTConfig]
             
             if fetchedConfigs.count > 0 {
                 
@@ -170,7 +174,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         let configFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "SWFTConfig")
         
         do {
-            let fetchedConfigs = try DatabaseManager.sharedInstance.persistentContainer.viewContext.fetch(configFetch) as! [SWFTConfig]
+            let fetchedConfigs = try self.databaseManager.persistentContainer.viewContext.fetch(configFetch) as! [SWFTConfig]
             
             if fetchedConfigs.count > 0 {
                 
@@ -185,7 +189,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         
         if mainEntity == nil {
             
-            mainEntity = NSEntityDescription .insertNewObject(forEntityName: "SWFTConfig", into: DatabaseManager.sharedInstance.persistentContainer.viewContext) as? SWFTConfig
+            mainEntity = NSEntityDescription .insertNewObject(forEntityName: "SWFTConfig", into: self.databaseManager.persistentContainer.viewContext) as? SWFTConfig
             
         }
         
@@ -193,7 +197,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         mainEntity?.versionMinor = 1
         mainEntity?.versionBuild = 20
         
-        databaseManager.saveContext()
+        self.databaseManager.saveContext()
         
     }
     
@@ -201,12 +205,12 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Blue
         
         if self.bluetoothManager.isScanning {
         
-            self.scanButton.title = "Start scanning"
+            self.scanButton.title = "Scan"
             self.bluetoothManager.stopScanning()
             
         } else {
             
-            self.scanButton.title = "Stop scanning"
+            self.scanButton.title = "Stop scan"
             self.peripherals = []
             self.bluetoothManager.startScanning(serviceUUIDs: nil)
             

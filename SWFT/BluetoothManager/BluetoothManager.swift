@@ -11,23 +11,23 @@ import CoreBluetooth
 
 class BluetoothManagerDelegateMulticast <T> {
     
-    private let delegates: NSHashTable<AnyObject>
+    fileprivate let delegates: NSHashTable<AnyObject>
     
     init(strongReferences: Bool = false) {
-        delegates = strongReferences ? NSHashTable<AnyObject>(): NSHashTable<AnyObject>.weakObjects()
+        self.delegates = strongReferences ? NSHashTable<AnyObject>(): NSHashTable<AnyObject>.weakObjects()
     }
     
     func addDelegate(_ delegate: T) {
-        delegates.add(delegate as AnyObject)
+        self.delegates.add(delegate as AnyObject)
     }
     
     func removeDelegate(_ delegate: T) {
-        delegates.remove(delegate as AnyObject)
+        self.delegates.remove(delegate as AnyObject)
     }
 
     
     func invokeDelegates(_ invocation: (T) -> ()) {
-        for delegate in delegates.allObjects {
+        for delegate in self.delegates.allObjects {
             invocation(delegate as! T)
         }
     }
@@ -52,9 +52,9 @@ protocol BluetoothManagerDelegate: class {
 
 class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    var delegates = BluetoothManagerDelegateMulticast<BluetoothManagerDelegate>()
+    var delegateArray = BluetoothManagerDelegateMulticast<BluetoothManagerDelegate>()
     
-    var centralManager: CBCentralManager!
+    var centralManager: CBCentralManager?
     var connectedPeripherals = NSMutableArray()
     var isScanning:Bool = false
     
@@ -63,6 +63,14 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     override init() {
         super.init()
         powerOnCentralManager()
+    }
+    
+    func addDelegate(_ delegate: AnyObject) {
+        self.delegateArray.addDelegate(delegate as! BluetoothManagerDelegate)
+    }
+    
+    func removeDelegate(_ delegate: AnyObject) {
+        self.delegateArray.removeDelegate(delegate as! BluetoothManagerDelegate)
     }
     
     func powerOnCentralManager() {
@@ -78,9 +86,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func startScanning(serviceUUIDs: [CBUUID]?) {
         
-        if (self.centralManager.state == .poweredOn) {
+        if (self.centralManager?.state == .poweredOn) {
             print("start scanning")
-            self.centralManager.scanForPeripherals(withServices: serviceUUIDs, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
+            self.centralManager?.scanForPeripherals(withServices: serviceUUIDs, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
             self.isScanning = true
             
         }
@@ -88,9 +96,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func stopScanning() {
-        if (self.centralManager.state == .poweredOn) {
+        if (self.centralManager?.state == .poweredOn) {
             print("stop scanning")
-            self.centralManager.stopScan()
+            self.centralManager?.stopScan()
             self.isScanning = false
         }
     }
@@ -99,7 +107,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
-        delegates.invokeDelegates {
+        self.delegateArray.invokeDelegates {
             $0.didDiscoverPeripherals(peripheral: peripheral, advertisementData: advertisementData, RSSI: RSSI)
         }
         
@@ -115,7 +123,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
         
-        delegates.invokeDelegates {
+       self.delegateArray.invokeDelegates {
             $0.didConnectPeripheral(peripheral: peripheral)
         }
         
@@ -123,7 +131,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         
-        delegates.invokeDelegates {
+        self.delegateArray.invokeDelegates {
             $0.didDiconnectPeripheral(peripheral: peripheral)
         }
         
@@ -162,27 +170,33 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         
-        switch centralManager.state {
+        if (self.centralManager != nil) {
             
-        case .poweredOn:
-            print("CBCentral powered ON")
-            
-        case .poweredOff:
-            print("CBCentral powered OFF")
-            
-        case .resetting:
-            print("CBCentral resetting")
-            
-        case .unknown:
-            print("Unknown")
-            
-        case .unsupported:
-            print("Unsupported")
-            
-        default:
-            break
+            switch centralManager!.state {
+                
+            case .poweredOn:
+                print("CBCentral powered ON")
+                
+            case .poweredOff:
+                print("CBCentral powered OFF")
+                
+            case .resetting:
+                print("CBCentral resetting")
+                
+            case .unknown:
+                print("Unknown")
+                
+            case .unsupported:
+                print("Unsupported")
+                
+            default:
+                break
+                
+            }
             
         }
+        
+        
         
     }
     
