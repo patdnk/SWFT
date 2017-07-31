@@ -1,16 +1,16 @@
 //
-//  MainVC.swift
-//  CardScan
+//  CameraVC.swift
+//  SWFT
 //
-//  Created by Dynek, Pat (ISBANUK) on 31/07/2017.
-//  Copyright © 2017 Dynek, Pat (ISBANUK). All rights reserved.
+//  Created by Dynek, Patryk on 29/06/2017.
+//  Copyright © 2017 MazeSys Ltd. All rights reserved.
 //
 
 import UIKit
 import AVFoundation
 import CoreData
 
-class MainVC: UIViewController {
+class CameraVC: UIViewController {
     
     @IBOutlet weak var cameraPreviewView: UIView!
     @IBOutlet weak var takePhotoButton: UIBarButtonItem!
@@ -107,7 +107,7 @@ class MainVC: UIViewController {
     }
 }
 
-extension MainVC : AVCapturePhotoCaptureDelegate {
+extension CameraVC : AVCapturePhotoCaptureDelegate {
     func capture(_ captureOutput: AVCapturePhotoOutput,
                  didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?,
                  previewPhotoSampleBuffer: CMSampleBuffer?,
@@ -135,7 +135,7 @@ extension MainVC : AVCapturePhotoCaptureDelegate {
     }
 }
 
-extension MainVC : AVCaptureMetadataOutputObjectsDelegate {
+extension CameraVC : AVCaptureMetadataOutputObjectsDelegate {
     func captureOutput(_ captureOutput: AVCaptureOutput!,
                        didOutputMetadataObjects metadataObjects: [Any]!,
                        from connection: AVCaptureConnection!) {

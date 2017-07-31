@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0806BD321F0B8598002E0521 /* NewDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0806BD311F0B8598002E0521 /* NewDeviceCell.swift */; };
+		0874557A1F2FC60D00588A66 /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087455791F2FC60D00588A66 /* CameraVC.swift */; };
+		0874557C1F2FC7EA00588A66 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0874557B1F2FC7EA00588A66 /* MainVC.swift */; };
 		96923DC11F0516BF002BD78E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96923DC01F0516BF002BD78E /* AppDelegate.swift */; };
-		96923DC31F0516BF002BD78E /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96923DC21F0516BF002BD78E /* MainVC.swift */; };
+		96923DC31F0516BF002BD78E /* BluetoothVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96923DC21F0516BF002BD78E /* BluetoothVC.swift */; };
 		96923DC61F0516BF002BD78E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96923DC41F0516BF002BD78E /* Main.storyboard */; };
 		96923DCB1F0516BF002BD78E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96923DCA1F0516BF002BD78E /* Assets.xcassets */; };
 		96923DCE1F0516BF002BD78E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96923DCC1F0516BF002BD78E /* LaunchScreen.storyboard */; };
@@ -20,9 +22,11 @@
 
 /* Begin PBXFileReference section */
 		0806BD311F0B8598002E0521 /* NewDeviceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewDeviceCell.swift; sourceTree = "<group>"; };
+		087455791F2FC60D00588A66 /* CameraVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
+		0874557B1F2FC7EA00588A66 /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		96923DBD1F0516BE002BD78E /* SWFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96923DC01F0516BF002BD78E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		96923DC21F0516BF002BD78E /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		96923DC21F0516BF002BD78E /* BluetoothVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothVC.swift; sourceTree = "<group>"; };
 		96923DC51F0516BF002BD78E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96923DCA1F0516BF002BD78E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96923DCD1F0516BF002BD78E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -65,7 +69,9 @@
 				96923DC01F0516BF002BD78E /* AppDelegate.swift */,
 				96F256DF1F05326A00A7B7B4 /* BluetoothManager */,
 				96923DE71F05260C002BD78E /* DatabaseManager */,
-				96923DC21F0516BF002BD78E /* MainVC.swift */,
+				0874557B1F2FC7EA00588A66 /* MainVC.swift */,
+				96923DC21F0516BF002BD78E /* BluetoothVC.swift */,
+				087455791F2FC60D00588A66 /* CameraVC.swift */,
 				96923DC41F0516BF002BD78E /* Main.storyboard */,
 				96923DCA1F0516BF002BD78E /* Assets.xcassets */,
 				96923DCC1F0516BF002BD78E /* LaunchScreen.storyboard */,
@@ -170,11 +176,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96923DC31F0516BF002BD78E /* MainVC.swift in Sources */,
+				96923DC31F0516BF002BD78E /* BluetoothVC.swift in Sources */,
 				96923DF11F05260C002BD78E /* SWFT.xcdatamodeld in Sources */,
 				96923DC11F0516BF002BD78E /* AppDelegate.swift in Sources */,
 				96923DEE1F05260C002BD78E /* DatabaseManager.swift in Sources */,
 				0806BD321F0B8598002E0521 /* NewDeviceCell.swift in Sources */,
+				0874557C1F2FC7EA00588A66 /* MainVC.swift in Sources */,
+				0874557A1F2FC60D00588A66 /* CameraVC.swift in Sources */,
 				96F256E11F05326A00A7B7B4 /* BluetoothManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
